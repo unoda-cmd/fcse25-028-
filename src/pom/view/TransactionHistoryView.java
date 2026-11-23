@@ -3,9 +3,13 @@ package pom.view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
 import pom.controller.TransactionHistoryController;
 import pom.model.Customer;
 import pom.model.Transaction;
@@ -42,21 +46,31 @@ public class TransactionHistoryView {
 
             for (Transaction transaction : controller.getTransactions()) {
 
-                Label details = new Label(transaction.getDetails());
+                Label details = new Label(
+                        "Transaction ID: " + transaction.getTransactionId()
+                                + "\nTransaction Type: " + transaction.getTransactionType()
+                                + "\nAmount: BWP " + transaction.getAmount()
+                                + "\nDate: " + transaction.getDate()
+                );
+
+                details.setStyle("-fx-font-size: 14px;");
 
                 layout.getChildren().add(details);
             }
         }
 
+        // Back to Dashboard button
         Button backButton = new Button("Back to Dashboard");
+
         backButton.setOnAction(event -> {
 
             DashboardView dashboard = new DashboardView(customer);
 
-            javafx.stage.Stage stage = (javafx.stage.Stage)
-                    ((Button) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage)
+                    ((Button) event.getSource())
+                            .getScene().getWindow();
 
-            javafx.scene.Scene scene = new javafx.scene.Scene(
+            Scene scene = new Scene(
                     dashboard.getView(), 500, 450
             );
 
@@ -68,6 +82,12 @@ public class TransactionHistoryView {
 
         layout.setStyle("-fx-background-color: #f0f4f8;");
 
-        return layout;
+        // Make transaction history scrollable
+        ScrollPane scrollPane = new ScrollPane(layout);
+        scrollPane.setFitToWidth(true);
+
+        VBox mainLayout = new VBox(scrollPane);
+
+        return mainLayout;
     }
 }

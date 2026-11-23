@@ -13,12 +13,6 @@ public class InvestmentAccount extends Account
 
         super(accountNumber, balance, branch);
 
-        if (balance < 500) {
-            throw new IllegalArgumentException(
-                    "Initial deposit must be at least BWP 500."
-            );
-        }
-
         this.interestRate = interestRate;
     }
 
